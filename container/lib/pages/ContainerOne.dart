@@ -31,6 +31,9 @@ class ContainerOne extends StatelessWidget {
             //Hacer que el fondo del contenedor sea transparente
             border: Border.all(
               color: Colors.black,
+
+              //Ancho del borde
+              width: 5,
             ),
           ),
         ),
