@@ -23,10 +23,15 @@ class ContainerOne extends StatelessWidget {
             //borderRadius: BorderRadius.circular(15),
 
             //Color del contenedor
-            color: Colors.red,
+            //color: Colors.red,
 
             //Convertir el contenedor a un circulo
             shape: BoxShape.circle,
+
+            //Hacer que el fondo del contenedor sea transparente
+            border: Border.all(
+              color: Colors.black,
+            ),
           ),
         ),
       ),
