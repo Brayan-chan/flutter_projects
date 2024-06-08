@@ -26,7 +26,7 @@ class ContainerOne extends StatelessWidget {
             //color: Colors.red,
 
             //Convertir el contenedor a un circulo
-            shape: BoxShape.circle,
+            //shape: BoxShape.circle,
 
             //Hacer que el fondo del contenedor sea transparente
             border: Border.all(
@@ -35,6 +35,8 @@ class ContainerOne extends StatelessWidget {
               //Ancho del borde
               width: 5,
             ),
+            //Hacer que el contenedor sea cuadrado
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
