@@ -20,10 +20,13 @@ class ContainerOne extends StatelessWidget {
 
           //Agregar la decoracion al contenedor
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            //borderRadius: BorderRadius.circular(15),
 
             //Color del contenedor
             color: Colors.red,
+
+            //Convertir el contenedor a un circulo
+            shape: BoxShape.circle,
           ),
         ),
       ),
