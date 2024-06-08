@@ -11,15 +11,20 @@ class ContainerOne extends StatelessWidget {
       body: Center(
         child: Container(
           //Configuracion del contenedor
-          
+
           //altura del contenedor
           height: 200,
-        
+
           //anchura del contenedor
           width: 200,
-        
-          //Color del contenedor
-          color: Colors.red,
+
+          //Agregar la decoracion al contenedor
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+
+            //Color del contenedor
+            color: Colors.red,
+          ),
         ),
       ),
     );
