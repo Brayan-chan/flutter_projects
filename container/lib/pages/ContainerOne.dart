@@ -38,6 +38,9 @@ class ContainerOne extends StatelessWidget {
             //Hacer que el contenedor sea cuadrado
             borderRadius: BorderRadius.circular(10),
           ),
+
+          //Agergar el contenido del contenedor
+          child: const Text('Hello World'),
         ),
       ),
     );
