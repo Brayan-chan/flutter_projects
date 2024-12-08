@@ -56,4 +56,11 @@ class DatabaseService {
     );
     return result.map((map) => Task.fromMap(map)).toList();
   }
+
+  // Nuevo método para limpiar la tabla "tasks"
+  Future<void> clearTasksTable() async {
+    final db = await database;
+    await db.delete('tasks');
+    print('Tabla "tasks" limpiada exitosamente');
+  }
 }
