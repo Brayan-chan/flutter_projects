@@ -15,13 +15,10 @@ void main() async {
   // Manejo de errores de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
-    // Aquí podrías agregar registro de errores a un servicio externo como Firebase Crashlytics.
   };
 
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
