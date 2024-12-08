@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'screens/add_task_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/voice_command_screen.dart';
+import 'services/foreground_service.dart';
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Inicializa el servicio en segundo plano
+  final ForegroundService foregroundService = ForegroundService();
+  await foregroundService.startService();
+
+  // Manejo de errores de Flutter
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
     // Aquí podrías agregar registro de errores a un servicio externo como Firebase Crashlytics.
@@ -13,6 +20,7 @@ void main() {
 
   runApp(const MyApp());
 }
+
 
 
 class MyApp extends StatelessWidget {
