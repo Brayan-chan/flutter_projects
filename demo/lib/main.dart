@@ -1,5 +1,4 @@
 import 'package:demo/pages/Dashboard.dart';
-import 'package:demo/pages/QRCodeScreen.dart';
 import 'package:demo/pages/SignInScreen.dart';
 import 'package:demo/pages/SignUpScreen.dart';
 import 'package:flutter/material.dart';

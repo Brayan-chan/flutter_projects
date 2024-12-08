@@ -4,7 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 class QrCodeScreen extends StatelessWidget {
   final Map<String, String> event;
 
-  const QrCodeScreen({Key? key, required this.event}) : super(key: key);
+  const QrCodeScreen({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
