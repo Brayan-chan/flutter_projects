@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart';
 import '../services/database_service.dart';
+import '../models/task.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Task> _tasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks();
+  }
+
+  Future<void> _loadTasks() async {
+    final tasks = await DatabaseService().getTasks();
+    setState(() {
+      _tasks = tasks;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Mis Tareas')),
-      body: FutureBuilder<List<Task>>(
-        future: DatabaseService().getTasksAtTime(DateTime.now()),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          final tasks = snapshot.data!;
-          return ListView.builder(
-            itemCount: tasks.length,
-            itemBuilder: (context, index) {
-              final task = tasks[index];
-              return ListTile(
-                title: Text(task.description),
-                subtitle: Text(
-                  'Programada: ${task.scheduledTime.toLocal()}',
-                ),
-              );
-            },
+      appBar: AppBar(title: Text('Tareas')),
+      body: ListView.builder(
+        itemCount: _tasks.length,
+        itemBuilder: (context, index) {
+          final task = _tasks[index];
+          return ListTile(
+            title: Text(task.description),
+            subtitle: Text(
+                'Hora: ${task.scheduledTime}\nRegistrada: ${task.registeredAt}'),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, '/add_task');
+        onPressed: () async {
+          await Navigator.pushNamed(context, '/add_task');
+          _loadTasks();
         },
+        child: Icon(Icons.add),
       ),
     );
   }

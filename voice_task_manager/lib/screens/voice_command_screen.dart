@@ -4,14 +4,15 @@ import '../services/text_to_speech.dart';
 import '../services/database_service.dart';
 
 class VoiceCommandScreen extends StatefulWidget {
+  const VoiceCommandScreen({super.key});
+
   @override
-  _VoiceCommandScreenState createState() => _VoiceCommandScreenState();
+  VoiceCommandScreenState createState() => VoiceCommandScreenState();
 }
 
-class _VoiceCommandScreenState extends State<VoiceCommandScreen> {
+class VoiceCommandScreenState extends State<VoiceCommandScreen> {
   final _voiceRecognizer = VoiceRecognizer();
   final _textToSpeech = TextToSpeech();
-
   String _result = '';
 
   @override
@@ -24,28 +25,25 @@ class _VoiceCommandScreenState extends State<VoiceCommandScreen> {
     await _voiceRecognizer.initialize();
   }
 
-  Future<void> _handleCommand() async {
+  Future<void> _handleVoiceCommand() async {
     String? command = await _voiceRecognizer.listen();
     if (command != null) {
       setState(() {
         _result = command;
       });
 
-      // Ejemplo: "¿Qué tareas debo realizar a las 7?"
       if (command.contains('tareas')) {
-        String hourString = command.split('a las').last.trim();
-        int hour = int.tryParse(hourString.split(':').first) ?? 0;
-
-        final tasks = await DatabaseService().getTasksAtTime(
-          DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour),
-        );
+        final now = DateTime.now();
+        final tasks = await DatabaseService().getTasksAtTime(now);
 
         if (tasks.isNotEmpty) {
           String response = tasks.map((t) => t.description).join(', ');
           await _textToSpeech.speak('Tus tareas son: $response');
         } else {
-          await _textToSpeech.speak('No tienes tareas programadas a esa hora.');
+          await _textToSpeech.speak('No tienes tareas programadas en este momento.');
         }
+      } else {
+        await _textToSpeech.speak('No entendí tu comando. Intenta de nuevo.');
       }
     }
   }
@@ -53,15 +51,15 @@ class _VoiceCommandScreenState extends State<VoiceCommandScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Comando de Voz')),
+      appBar: AppBar(title: Text('Comandos de Voz')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Resultado: $_result'),
+            Text('Comando: $_result'),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _handleCommand,
+              onPressed: _handleVoiceCommand,
               child: Text('Escuchar Comando'),
             ),
           ],

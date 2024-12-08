@@ -1,3 +1,4 @@
+// screens/add_task_screen.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/task.dart';
@@ -16,7 +17,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Agregar Tarea')),
+      appBar: AppBar(title: const Text('Agregar Tarea')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -25,28 +26,31 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             children: [
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Descripción'),
+                decoration: const InputDecoration(labelText: 'Descripción'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese una descripción';
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Por favor ingrese una descripción válida';
+                  }
+                  if (value.length > 255) {
+                    return 'La descripción no puede superar los 255 caracteres';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ListTile(
                 title: Text(
                   _selectedDateTime == null
                       ? 'Selecciona Fecha y Hora'
                       : DateFormat('dd/MM/yyyy HH:mm').format(_selectedDateTime!),
                 ),
-                trailing: Icon(Icons.calendar_today),
+                trailing: const Icon(Icons.calendar_today),
                 onTap: _selectDateTime,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _saveTask,
-                child: Text('Guardar Tarea'),
+                child: const Text('Guardar Tarea'),
               ),
             ],
           ),
@@ -56,10 +60,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Future<void> _selectDateTime() async {
+    final now = DateTime.now();
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: now,
+      firstDate: now,
       lastDate: DateTime(2100),
     );
 
@@ -86,14 +91,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void _saveTask() async {
     if (_formKey.currentState!.validate() && _selectedDateTime != null) {
       final task = Task(
-        id: 0,
-        description: _descriptionController.text,
+        description: _descriptionController.text.trim(),
         registeredAt: DateTime.now(),
         scheduledTime: _selectedDateTime!,
       );
 
       await DatabaseService().insertTask(task);
       Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor completa todos los campos.')),
+      );
     }
   }
 }
